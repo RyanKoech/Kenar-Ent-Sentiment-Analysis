@@ -1,4 +1,5 @@
 import re
+from wordcloud import WordCloud, STOPWORDS
 
 def preprocess_tweet(sen):
     '''Cleans text data up, leaving only 2 or more char long non-stepwords composed of A-Z & a-z only
@@ -19,3 +20,19 @@ def preprocess_tweet(sen):
     sentence = re.sub(r'\s+', ' ', sentence)  # Next, we remove all the single characters and replace it by a space which creates multiple spaces in our text. Finally, we remove the multiple spaces from our text as well.
 
     return sentence
+
+#Function to Create Wordcloud
+
+def create_word_cloud(text):
+    mask = np.array(Image.open("./resources/cloud.png"))
+    stopwords = set(STOPWORDS)
+    wc = WordCloud(background_color="white",
+                  mask = mask,
+                  max_words=100,
+                  stopwords=stopwords,
+                  repeat=True)
+    wc.generate(str(text))
+    path="outputs/c1_wordcloud.png"
+    wc.to_file(path)
+    print("Word Cloud Saved Successfully")
+    display(Image.open(path))
