@@ -1,4 +1,7 @@
 import re
+import numpy as np
+import pandas as pd
+from PIL import Image
 from wordcloud import WordCloud, STOPWORDS
 
 def preprocess_tweet(sen):
@@ -36,3 +39,10 @@ def create_word_cloud(text):
     wc.to_file(path)
     print("Word Cloud Saved Successfully")
     display(Image.open(path))
+
+#Function for count_values_in single columns
+
+def count_values_in_column(data,feature):
+    total=data.loc[:,feature].value_counts(dropna=False)
+    percentage=round(data.loc[:,feature].value_counts(dropna=False,normalize=True)*100,2)
+    return pd.concat([total,percentage],axis=1,keys=['Total','Percentage'])
