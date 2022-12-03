@@ -26,7 +26,9 @@ def preprocess_tweet(sen):
 
 #Function to Create Wordcloud
 
-def create_word_cloud(text):
+def create_word_cloud(text, name):
+    if(len(text) == 0):
+      return
     mask = np.array(Image.open("./resources/cloud.png"))
     stopwords = set(STOPWORDS)
     wc = WordCloud(background_color="white",
@@ -35,9 +37,9 @@ def create_word_cloud(text):
                   stopwords=stopwords,
                   repeat=True)
     wc.generate(str(text))
-    path="outputs/c1_wordcloud.png"
+    path="outputs/"+name+"_wordcloud.png"
     wc.to_file(path)
-    print("Word Cloud Saved Successfully")
+    print("Word Cloud Saved Successfully ("+name+")")
     display(Image.open(path))
 
 #Function for count_values_in single columns
@@ -46,3 +48,6 @@ def count_values_in_column(data,feature):
     total=data.loc[:,feature].value_counts(dropna=False)
     percentage=round(data.loc[:,feature].value_counts(dropna=False,normalize=True)*100,2)
     return pd.concat([total,percentage],axis=1,keys=['Total','Percentage'])
+
+def is_blank(s):
+    return bool(s and not s.isspace())
